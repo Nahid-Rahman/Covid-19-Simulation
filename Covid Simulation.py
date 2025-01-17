@@ -16,15 +16,15 @@ COVID19_PARAMS = {
     "severe_recovery": (21, 42),
     "severe_death": (14, 56),
     "fatality_rate": 0.075,  # Increased to 7.5%
-    "serial_interval": 7    
+    "serial_interval": 7
 }
 
-class Virus():
+class Virus:
     def __init__(self, params):
         # create a circular (polar) plot
         self.fig = plt.figure()
         self.axes = self.fig.add_subplot(111, projection="polar")
-        # removing gridlines and tick marks
+        # removing gridlines and tickmarks
         self.axes.grid(False)
         self.axes.set_xticklabels([])
         self.axes.set_yticklabels([])
@@ -39,9 +39,12 @@ class Virus():
             "\nDeaths: 0", xy=[3 * np.pi / 2, 1], ha="center", va="top", color=BLACK)
         self.recovered_text = self.axes.annotate(
             "\n\nRecovered: 0", xy=[3 * np.pi / 2, 1], ha="center", va="top", color=GREEN)
+        self.uninfected_text = self.axes.annotate(
+            "\n\n\nUninfected: 1499", xy=[3 * np.pi / 2, 1], ha="center", va="top", color=GREY)
 
         # create member variables
         self.day = 0
+        self.population = 147340
         self.total_num_infected = 0
         self.num_currently_infected = 0
         self.num_recovered = 0
@@ -71,7 +74,6 @@ class Virus():
         self.initial_population()
 
     def initial_population(self):
-        self.population = 5000  # Change this value to set the population dynamically
         self.num_currently_infected = 1
         self.total_num_infected = 1
         indices = np.arange(0, self.population) + 0.5
@@ -198,22 +200,22 @@ class Virus():
         self.infected_text.set_text("Infected: {}".format(self.num_currently_infected))
         self.deaths_text.set_text("\nDeaths: {}".format(self.num_deaths))
         self.recovered_text.set_text("\n\nRecovered: {}".format(self.num_recovered))
-
-    def gen(self): 
-        while self.num_deaths + self.num_recovered < self.total_num_infected:
-            yield
+        uninfected_count = self.population - (self.num_currently_infected + self.num_recovered + self.num_deaths)
+        self.uninfected_text.set_text("\n\n\nUninfected: {}".format(uninfected_count))
 
     def animate(self):
-        self.anim = ani.FuncAnimation(
-            self.fig,
-            self.spread_virus,
-            frames=self.gen,
-            repeat=True)
+        self.anim = ani.FuncAnimation(self.fig, self.spread_virus, interval=1000)
+        plt.show()
 
-def main():
-    coronavirus = Virus(COVID19_PARAMS)
-    coronavirus.animate()
-    plt.show()
+# Create Virus instance with COVID-19 parameters and animate
+virus = Virus(COVID19_PARAMS)
+virus.animate()
 
-if __name__ == "__main__":
-    main()
+
+# def main():
+#     coronavirus = Virus(COVID19_PARAMS)
+#     coronavirus.animate()
+#     plt.show()
+
+# if __name__ == "__main__":
+#     main()
