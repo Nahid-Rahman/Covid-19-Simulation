@@ -44,7 +44,7 @@ class Virus:
 
         # create member variables
         self.day = 0
-        self.population = 147340
+        self.population = 1500
         self.total_num_infected = 0
         self.num_currently_infected = 0
         self.num_recovered = 0
@@ -210,12 +210,3 @@ class Virus:
 # Create Virus instance with COVID-19 parameters and animate
 virus = Virus(COVID19_PARAMS)
 virus.animate()
-
-
-# def main():
-#     coronavirus = Virus(COVID19_PARAMS)
-#     coronavirus.animate()
-#     plt.show()
-
-# if __name__ == "__main__":
-#     main()
